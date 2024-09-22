@@ -1,0 +1,167 @@
+{
+	"info": {
+		"_postman_id": "d1fef9ab-a9a1-4b18-a409-e72e037772ae",
+		"name": "Test",
+		"description": "This api testing is basically desinged for practice purpose.\n\n- It has included 3 types of functions.\n    \n- POST method using for create something into the server.\n    \n- GET method using for retreive the data from the server.\n    \n- GET the specific id searching.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37968667"
+	},
+	"item": [
+		{
+			"name": "create",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var name = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+							"pm.environment.set(\"fistName\",name)\r",
+							"\r",
+							"var name = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+							"pm.environment.set(\"middleName\",name)\r",
+							"\r",
+							"var name = pm.variables.replaceIn('{{$randomLastName}}')\r",
+							"pm.environment.set(\"lastName\",name)\r",
+							"\r",
+							"const date = require('moment')\r",
+							"const today = date()\r",
+							"console.log(today)\r",
+							"pm.environment.set(\"date\",today.format(\"YYYY-MM-DD\"))\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"first_name\":\"{{fistName}}\",\r\n  \"middle_name\": \"{{middleName}}\",\r\n  \"last_name\": \"{{lastName}}\",\r\n  \"date_of_birth\": \"{{date}}\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/studentsDetails",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails"
+					]
+				},
+				"description": "StartFragment\n\n`{    \"id\": 10387866,` \n\n`\"first_name\": \"Alek\",`   \n\n`\"middle_name\": \"Georgette\",` \n\n `\"last_name\": \"Schamberger\",`   \n\n`\"date_of_birth\": \"2024-09-03\"`\n\n`}`\n\nEndFragment"
+			},
+			"response": []
+		},
+		{
+			"name": "See the data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Jon\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/studentsDetails",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails"
+					]
+				},
+				"description": "`StartFragment`\n\n`{`\n\n`\"id\": 10387866,`       \n\n`\"first_name\": \"Alek\",`       \n\n`\"middle_name\": \"Georgette\",`     \n\n  `\"last_name\": \"Schamberger\",`       \n\n`\"date_of_birth\": \"2024-09-03\"`   \n\n`}`\n\n`EndFragment      `"
+			},
+			"response": []
+		},
+		{
+			"name": "specific id see",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var value = pm.response.json()\r",
+							"\r",
+							"pm.environment.set(\"id\",value.data.id)\r",
+							"console.log(value.data.id)\r",
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(200).to.be.oneOf([200]);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/studentsDetails/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails",
+						"{{id}}"
+					]
+				},
+				"description": "StartFragment\n\n{   \n\n\"status\": \"true\", \n\n  \"data\": {   \"id\": 10387647,       \n\n\"first_name\": \"Genevieve\",       \n\n\"middle_name\": \"Bryana\",       \n\n\"last_name\": \"Wiza\",       \n\n\"date_of_birth\": \"sample string 5\"   \n\n}\n\n}\n\nEndFragment"
+			},
+			"response": []
+		}
+	]
+}
